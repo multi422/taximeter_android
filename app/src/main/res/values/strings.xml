@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">تاکسی متر</string>
+    <string name="title_activity_login_screen">صفحه ورود</string>
+    <string name="prompt_email">کد ملی</string>
+    <string name="prompt_password">رمز عبور</string>
+    <string name="action_sign_in">ورود به اکانت</string>
+    <string name="action_sign_in_short">ورود</string>
+    <string name="welcome">"خوش آمدید"</string>
+    <string name="invalid_username">کد ملی ثبت نشده است</string>
+    <string name="invalid_password">رمز عبور باید حداقل 6 کاراکتر باشد</string>
+    <string name="login_failed">"کد ملی یا رمز عبور اشتباه وارد شده است"</string>
+    <string name="zone_description">"مسیرهای تعیین شده به شرح زیر است:\n
+        1- گردشی و خطوط شهری\n
+        2- راه آهن\n
+        3- پایانه مسافربری\n
+        4- بی سیم و آژانس\n
+        5- فرودگاه\n
+        6- قراردادی
+        "</string>
+    <string name="type_description">"نوع خودروهای تعیین شده به شرح زیر است:\n
+        1- خوردوهای سواری سبک\n
+        2- ون ها
+        "</string>
+    <string name="vehicle_description">"خودروهای تعیین شده به شرح زیر است:\n
+        1- آریو، برلیانس سدان\n
+        2- سمند، پژو، آردی و روا\n
+        3- پیکان، پراید و مشابه\n
+        1- ون برلیانس\n
+        2- ون نارون، ون غزال، ون دلیکا
+        "</string>
+</resources>
