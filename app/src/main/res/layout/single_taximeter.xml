@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10px"
+    android:layout_margin="3dp"
     android:background="#2E2D29"
     tools:context=".Single_Taximeter">
 
     <TableLayout
+        android:id="@+id/single_taximeter_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -44,7 +45,6 @@
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
@@ -74,16 +74,103 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/shabnam"
                     android:textColor="#E91E1E"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/netAlarmSingleTaximeterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/shabnam"
                     android:textColor="#E91E1E"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/manPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:onClick="manPlaceClicked"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:id="@+id/manIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#423E3E"
+                        android:backgroundTint="#353535"
+                        android:src="@drawable/manicon" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/womanPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:onClick="womanPlaceClicked"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:id="@+id/womanIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#423E3E"
+                        android:backgroundTint="#353535"
+                        android:src="@drawable/womanicon" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/zoneText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="  " />
+
+                <TextView
+                    android:id="@+id/carTypeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="  " />
             </LinearLayout>
         </TableRow>
 
@@ -105,91 +192,66 @@
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="#575757"
-                    android:backgroundTint="#656565"
+                    android:background="#2E2E2E"
+                    android:backgroundTint="#303030"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/shiftCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.3"
+                            android:editable="false"
+                            android:gravity="center" />
 
                         <TextView
                             android:id="@+id/textView12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-black"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/shabnam"
                             android:gravity="center"
-                            android:text="منطقه"
-                            android:textColor="#F1F1F1" />
+                            android:text="شیفت شب"
+                            android:textColor="#F1F1F1"
+                            android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/districtText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/graduate"
-                            android:gravity="center"
-                            android:textSize="20sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/weatherCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.3"
+                            android:editable="false" />
 
                         <TextView
                             android:id="@+id/textView7"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-black"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/shabnam"
                             android:gravity="center"
                             android:text="آب و هوا"
-                            android:textColor="#F1F1F1" />
+                            android:textColor="#F1F1F1"
+                            android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/weatherText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/graduate"
-                            android:gravity="center"
-                            android:textSize="20sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView11"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-black"
-                            android:gravity="center"
-                            android:text="ایام"
-                            android:textColor="#F1F1F1" />
-
-                        <TextView
-                            android:id="@+id/eventsText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/graduate"
-                            android:gravity="center"
-                            android:textSize="20sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -199,8 +261,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="#575757"
-                    android:backgroundTint="#656565"
+                    android:background="#2E2E2E"
+                    android:backgroundTint="#303030"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -210,7 +272,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/graduate"
+                        android:fontFamily="@font/digit"
                         android:gravity="center"
                         android:text="                               "
                         android:textColor="#F1F1F1"
@@ -222,7 +284,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/graduate"
+                        android:fontFamily="@font/digit"
                         android:gravity="center"
                         android:text="                               "
                         android:textColor="#F1F1F1"
@@ -250,77 +312,66 @@
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="#575757"
-                    android:backgroundTint="#656565"
+                    android:background="#2E2E2E"
+                    android:backgroundTint="#303030"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:textDirection="rtl">
-
-                    <TextView
-                        android:id="@+id/textView31"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-black"
-                        android:gravity="center"
-                        android:text=" ثانیه"
-                        android:textColor="#F1F1F1"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/secondCountdown"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/graduate"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="#F1F1F1"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:id="@+id/textView30"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-black"
-                        android:gravity="center"
-                        android:text=" دقیقه و "
-                        android:textColor="#F1F1F1"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/minuteCountdown"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/graduate"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="#F1F1F1"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-black"
-                        android:gravity="center"
-                        android:text=" ساعت و "
-                        android:textColor="#F1F1F1"
-                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/hourCountdown"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:fontFamily="@font/graduate"
+                        android:fontFamily="@font/digit"
                         android:gravity="center"
-                        android:text="0"
-                        android:textColor="#F1F1F1"
+                        android:text="00"
+                        android:textColor="#FF0000"
+                        android:textSize="48sp" />
+
+                    <TextView
+                        android:id="@+id/textView30"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.3"
+                        android:fontFamily="@font/digit"
+                        android:gravity="center"
+                        android:text=" : "
+                        android:textColor="#FF0000"
                         android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/minuteCountdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/digit"
+                        android:gravity="center"
+                        android:text="00"
+                        android:textColor="#FF0000"
+                        android:textSize="48sp" />
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.3"
+                        android:fontFamily="@font/digit"
+                        android:gravity="center"
+                        android:text=" : "
+                        android:textColor="#FF0000"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/secondCountdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/digit"
+                        android:gravity="center"
+                        android:text="00"
+                        android:textColor="#FF0000"
+                        android:textSize="48sp" />
 
                 </LinearLayout>
 
@@ -329,21 +380,30 @@
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="#575757"
-                    android:backgroundTint="#656565"
+                    android:background="#2E2E2E"
+                    android:backgroundTint="#303030"
                     android:gravity="center"
                     android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView35"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/shabnam"
+                        android:text="کیلومتر"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/distanceTextView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:fontFamily="@font/graduate"
+                        android:fontFamily="@font/digit"
                         android:gravity="center"
                         android:text="مسافت"
-                        android:textColor="#F1F1F1"
-                        android:textSize="24sp" />
+                        android:textColor="#FF0000"
+                        android:textSize="34sp" />
 
                 </LinearLayout>
 
@@ -359,9 +419,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
+                android:background="#2E2E2E"
+                android:backgroundTint="#303030"
                 android:gravity="center"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/shabnam"
+                    android:gravity="center"
+                    android:text="تومان"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/costText"
@@ -369,13 +442,12 @@
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="#575757"
-                    android:backgroundTint="#656565"
-                    android:fontFamily="@font/graduate"
+                    android:fontFamily="@font/digit"
                     android:gravity="center"
                     android:text="هزینه سفر"
-                    android:textColor="#F1F1F1"
-                    android:textSize="34sp" />
+                    android:textColor="#FF0000"
+                    android:textSize="60sp" />
+
             </LinearLayout>
         </TableRow>
 
@@ -400,6 +472,7 @@
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:background="#1A237E"
+                    android:fontFamily="@font/shabnam"
                     android:onClick="finishJourneyClicked"
                     android:text="اتمام سفر"
                     android:textSize="20sp" />
@@ -411,6 +484,7 @@
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:background="#B71C1C"
+                    android:fontFamily="@font/shabnam"
                     android:onClick="StopCountdown"
                     android:text="توقف و شروع مجدد"
                     android:textSize="20sp" />
@@ -422,17 +496,20 @@
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:background="#BF360C"
+                    android:fontFamily="@font/shabnam"
                     android:onClick="PauseCountdown"
-                    android:text="مکث"
+                    android:text="مکث راننده"
                     android:textSize="20sp" />
 
                 <Button
-                    android:id="@+id/startTimer"
+                    android:id="@+id/startTimerButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:background="#004D40"
+                    android:enabled="false"
+                    android:fontFamily="@font/shabnam"
                     android:onClick="StartCountdown"
                     android:text="شروع"
                     android:textSize="20sp" />

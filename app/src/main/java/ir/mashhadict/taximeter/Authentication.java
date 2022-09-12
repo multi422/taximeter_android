@@ -42,7 +42,6 @@ public class Authentication extends AppCompatActivity {
             alertDialog.setTitle("دستگاه به اینترنت متصل نیست !");
             alertDialog.setMessage("برای ثبت نام یا ورود به حساب کاربری خود ابتدا باید دستگاه را به اینترنت متصل کنید");
         }
-
     }
 
 

@@ -4,31 +4,28 @@ public class Journey {
 
     private Integer id;
     private int idDriver;
-    private String startDate;
-    private String startTime;
-    private String finishDate;
-    private String finishTime;
-    private double srcLat;
-    private double srcLng;
-    private double desLat;
-    private double desLng;
+    private double lat;
+    private double lng;
     private double distance;
     private double cost;
     private int psgNum;
+    private boolean isStart = false;
+    private boolean isFinish = false;
+    private boolean isMale = true;
+    private boolean payMet = false;
+    private String time;
 
-    public Journey(int idDriver, String startDate, String startTime, String finishDate, String finishTime, double srcLat, double srcLng, double desLat, double desLng, double distance, double cost, int psgNum) {
+    public Journey(int idDriver, double lat, double lng, double distance, double cost, int psgNum, boolean isStart, boolean isFinish, boolean isMale, boolean payMet) {
         this.idDriver = idDriver;
-        this.startDate = startDate;
-        this.startTime = startTime;
-        this.finishDate = finishDate;
-        this.finishTime = finishTime;
-        this.srcLat = srcLat;
-        this.srcLng = srcLng;
-        this.desLat = desLat;
-        this.desLng = desLng;
+        this.lat = lat;
+        this.lng = lng;
         this.distance = distance;
         this.cost = cost;
         this.psgNum = psgNum;
+        this.isStart = isStart;
+        this.isFinish = isFinish;
+        this.isMale = isMale;
+        this.payMet = payMet;
     }
 
     public Integer getId() {
@@ -39,36 +36,12 @@ public class Journey {
         return idDriver;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public double getLat() {
+        return lat;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public String getFinishDate() {
-        return finishDate;
-    }
-
-    public String getFinishTime() {
-        return finishTime;
-    }
-
-    public double getSrcLat() {
-        return srcLat;
-    }
-
-    public double getSrcLng() {
-        return srcLng;
-    }
-
-    public double getDesLat() {
-        return desLat;
-    }
-
-    public double getDesLng() {
-        return desLng;
+    public double getLng() {
+        return lng;
     }
 
     public double getDistance() {
@@ -81,5 +54,25 @@ public class Journey {
 
     public int getPsgNum() {
         return psgNum;
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
+
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public boolean isMale() {
+        return isMale;
+    }
+
+    public boolean isPayMet() {
+        return payMet;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

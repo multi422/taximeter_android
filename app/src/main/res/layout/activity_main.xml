@@ -4,12 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E2D29"
+    android:layout_gravity="top"
+    android:foregroundGravity="top"
+    app:layout_anchorGravity="top"
     tools:context=".MainPage">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:foregroundGravity="top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,40 +27,72 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/checkInternetConncetionMainPage"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside" />
+                    app:srcCompat="@drawable/netconnectedicon" />
 
                 <ImageView
                     android:id="@+id/checkGpsConnectionMainPage"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@drawable/gpsconnectedicon" />
             </LinearLayout>
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/personImage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/mohammadbagherhaddad"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="15dp">
+                android:padding="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/nameMainText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/shabnam"
+                        android:gravity="center"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
 
                     <TextView
                         android:id="@+id/idCodeMainText"
@@ -59,8 +100,23 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
+                        android:fontFamily="@font/shabnam"
                         android:gravity="center"
-                        android:textSize="20sp" />
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="\n" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -68,49 +124,16 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/lastnameMainText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/firstnameMainText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/typeMainText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="20sp" />
+                    android:padding="2dp">
 
                     <TextView
                         android:id="@+id/zoneMainText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/shabnam"
                         android:gravity="center"
-                        android:textSize="20sp" />
+                        android:textSize="24sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -118,25 +141,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/carPelakMainText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/carColorMainText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="20sp" />
+                    android:padding="2dp">
 
                     <TextView
                         android:id="@+id/carModelMainText"
@@ -144,8 +149,23 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
+                        android:fontFamily="@font/shabnam"
                         android:gravity="center"
-                        android:textSize="20sp" />
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/taxipelaklayer" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -154,6 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
@@ -164,12 +185,25 @@
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:background="#FF9800"
-                    android:fontFamily="sans-serif-black"
+                    android:fontFamily="@font/shabnam"
                     android:includeFontPadding="false"
                     android:minHeight="70dp"
                     android:onClick="OpenPageMultiTaximeter"
                     android:padding="5dp"
                     android:text="چندنفره"
+                    android:textColor="#000000"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/contractualTaximeter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="#FF9800"
+                    android:fontFamily="@font/shabnam"
+                    android:onClick="openPageContractualTaximeter"
+                    android:text="قراردادی"
                     android:textColor="#000000"
                     android:textSize="24sp" />
 
@@ -180,7 +214,7 @@
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:background="#FF9800"
-                    android:fontFamily="sans-serif-black"
+                    android:fontFamily="@font/shabnam"
                     android:includeFontPadding="false"
                     android:minHeight="70dp"
                     android:onClick="OpenPageSingleTaximeter"
@@ -191,15 +225,25 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/logJourney"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="15dp"
-                android:background="#FF9800"
+                android:layout_weight="1"
+                android:background="#33691E"
+                android:fontFamily="@font/shabnam"
                 android:padding="15dp"
                 android:text="تاریخچه سفرها"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/carImage"
+                android:layout_width="401dp"
+                android:layout_height="307dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="bottom|center_horizontal"
+                app:srcCompat="@mipmap/samadgreen" />
 
         </LinearLayout>
     </ScrollView>

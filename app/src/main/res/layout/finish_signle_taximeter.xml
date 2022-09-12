@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,16 +28,28 @@
                 android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/shabnam"
                 android:gravity="center"
                 android:text="رسید اتمام سفر"
                 android:textSize="34sp" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#E65100"
+                android:fontFamily="@font/shabnam"
+                android:onClick="mainPageClicked"
+                android:text="صفحه قبل"
+                android:textSize="16sp" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center">
 
             <TextView
@@ -44,113 +57,144 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="\n" />
+                android:text=" " />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:layoutDirection="rtl"
             android:textDirection="rtl">
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.9"
+                android:fontFamily="@font/shabnam"
+                android:gravity="right|center_vertical"
                 android:text="شماره شناسایی راننده" />
 
             <TextView
                 android:id="@+id/idCodeDriver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="124dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/digit"
+                android:gravity="center"
                 android:text=" "
-                android:textSize="20sp" />
+                android:textSize="24sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:layoutDirection="rtl"
             android:textDirection="rtl">
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1.9"
+                android:fontFamily="@font/shabnam"
+                android:gravity="right|center_vertical"
                 android:text="زمان شروع سفر"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/startTimeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/digit"
+                android:gravity="center"
+                android:textSize="24sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:layoutDirection="rtl"
             android:textDirection="rtl">
 
             <TextView
                 android:id="@+id/textView23"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1.9"
+                android:fontFamily="@font/shabnam"
+                android:gravity="right|center_vertical"
                 android:text="زمان اتمام سفر"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/finishTimeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/digit"
+                android:gravity="center"
+                android:textSize="24sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:layoutDirection="rtl"
             android:textDirection="rtl">
 
             <TextView
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1.9"
+                android:fontFamily="@font/shabnam"
+                android:gravity="right|center_vertical"
                 android:text="مدت زمان سفر"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/hoursDurationTimeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/shabnam"
                 android:gravity="center"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/minutesDurationTimeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/shabnam"
                 android:gravity="center"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/secondsDurationTimeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/shabnam"
                 android:gravity="center"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center">
 
             <TextView
@@ -158,103 +202,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="\n" />
+                android:text=" " />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layoutDirection="rtl"
-            android:textDirection="rtl">
-
-            <TextView
-                android:id="@+id/textView32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="مبدا سفر"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/sourceLatText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text=" --- " />
-
-            <TextView
-                android:id="@+id/sourceLngText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layoutDirection="rtl"
-            android:textDirection="rtl">
-
-            <TextView
-                android:id="@+id/textView36"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="مقصد سفر"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/destinationLatText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text=" --- " />
-
-            <TextView
-                android:id="@+id/destinationLngText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:gravity="center"
             android:layoutDirection="rtl"
             android:textDirection="rtl">
 
             <TextView
                 android:id="@+id/textView38"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/shabnam"
+                android:gravity="right|center_vertical"
                 android:text="مسافت پیموده شده"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/distanceText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/digit"
+                android:gravity="center"
+                android:textSize="34sp" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/shabnam"
+                android:gravity="center"
+                android:text="کیلومتر"
+                android:textSize="16sp" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center">
 
             <TextView
@@ -262,36 +254,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="\n" />
+                android:text=" " />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:layoutDirection="rtl"
             android:textDirection="rtl">
 
             <TextView
                 android:id="@+id/textView43"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/shabnam"
+                android:gravity="right|center_vertical"
                 android:text="هزینه سفر"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/costTextBill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/digit"
+                android:gravity="center"
+                android:text="17000.00"
+                android:textSize="34sp" />
 
             <TextView
                 android:id="@+id/textView45"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/shabnam"
+                android:gravity="center"
                 android:text="تومان"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cashPay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="#1B5E20"
+                    android:fontFamily="@font/shabnam"
+                    android:onClick="cashPayClicked"
+                    android:padding="3dp"
+                    android:text="پرداخت نقدی" />
+
+                <Button
+                    android:id="@+id/qrPay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="#4A148C"
+                    android:fontFamily="@font/shabnam"
+                    android:onClick="qrPayClicked"
+                    android:padding="3dp"
+                    android:text="پرداخت با QR" />
+            </LinearLayout>
+
+        </TableRow>
+
     </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

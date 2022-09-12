@@ -2,10 +2,12 @@ package ir.mashhadict.taximeter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,13 +22,12 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,41 +40,56 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Multi_Taximeter extends Activity {
 
-
+    MediaPlayer netsoundM, gpssoundM, startSoundM, pauseSoundM, stopSoundM, finishSoundM;
     private TextView tvLatitudeMulti, tvLongitudeMulti;
-    Boolean[] flagStart = {false, false, false};
-    long[] startTime = {0, 0, 0};
-    long[] nowTime = {System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis()};
-    long[] Timer = {0, 0, 0};
-    long[] elapsed = {0, 0, 0};
-    double[] latitude1 = {0, 0, 0};
-    double[] longitude1 = {0, 0, 0};
-    double[] startLatitude = new double[3];
-    double[] startLongitude = new double[3];
-    double[] latitude2 = {0, 0, 0};
-    double[] longitude2 = {0, 0, 0};
-    final double[] distanceTraveled = {0, 0, 0};
-    final boolean[] pointFlag = {false, false, false};
-    int[] hours = {0, 0, 0};
-    int[] minutes = {0, 0, 0};
-    int[] seconds = {0, 0, 0};
-    double[] duration = {0, 0, 0};
-    int eventsRate = 1;
-    int weatherRate = 1;
-    int districtRate = 1;
+    Boolean[] flagStart = {false, false, false, false};
+    long[] startTime = {0, 0, 0, 0};
+    long[] nowTime = {System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis()};
+    long[] Timer = {0, 0, 0, 0};
+    long[] elapsed = {0, 0, 0, 0};
+    double[] latitude1 = {0, 0, 0, 0};
+    double[] longitude1 = {0, 0, 0, 0};
+    double[] startLatitude = new double[4];
+    double[] startLongitude = new double[4];
+    double[] latitude2 = {0, 0, 0, 0};
+    double[] longitude2 = {0, 0, 0, 0};
+    final double[] distanceTraveled = {0, 0, 0, 0};
+    final double[] distanceTiming = {0, 0, 0, 0};
+    int[] timeWaiting = {0, 0, 0, 0};
+    final boolean[] pointFlag = {false, false, false, false};
+    int[] hours = {0, 0, 0, 0};
+    int[] minutes = {0, 0, 0, 0};
+    int[] seconds = {0, 0, 0, 0};
+    double[] duration = {0, 0, 0, 0};
+    boolean weather = false;
+    boolean shift = false;
     double rate = 1;
-    double[] cost = {0, 0, 0};
+    String ZoneStringText;
+    String typeStringText;
+    int initionalRate;
+    int distanceRate;
+    int timeRate;
+    double[] cost = {0, 0, 0, 0};
     String[] startDate = {"", "", ""};
     String[] finishDate = {"", "", ""};
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     JsonPlaceHolderApi jsonPlaceHolderApi;
-    boolean[] isStart = {false, false, false};
-    double[] distanceNow = {0, 0, 0};
+    boolean[] isStart = {false, false, false, false};
+    double[] distanceNow = {0, 0, 0, 0};
+    LinearLayout PassOneRegion;
+    LinearLayout PassTwoRegion;
+    LinearLayout PassThreeRegion;
+    LinearLayout PassFourRegion;
 
 
     int identityCode;
     String firstName;
     String lastName;
+    String zoneString;
+    String typeString;
+    String carString;
+    int zoneInt = 1;
+    int typeInt = 1;
+    int carInt = 1;
     String carModel;
     String pelak;
     String color;
@@ -86,6 +102,7 @@ public class Multi_Taximeter extends Activity {
         boolean isWorkingPassOne = false;
         boolean isWorkingPassTwo = false;
         boolean isWorkingPassThree = false;
+        boolean isWorkingPassFour = false;
 
         if (flagStart[0] == true) {
             isWorkingPassOne = true;
@@ -95,6 +112,9 @@ public class Multi_Taximeter extends Activity {
         }
         if (flagStart[2] == true) {
             isWorkingPassThree = true;
+        }
+        if (flagStart[3] == true) {
+            isWorkingPassFour = true;
         }
 
         Post post = new Post(idCode, lat, lng, false, isWorkingPassOne, isWorkingPassTwo, isWorkingPassThree);
@@ -126,6 +146,7 @@ public class Multi_Taximeter extends Activity {
 
             }
         });
+        post = null;
     }
 
 
@@ -169,7 +190,163 @@ public class Multi_Taximeter extends Activity {
         return (int) (elapsed[2] + System.currentTimeMillis() - startTime[2]);
     }
 
+    int printFourCountDown() {
+        nowTime[3] = System.currentTimeMillis();
+        return (int) (elapsed[3] + System.currentTimeMillis() - startTime[3]);
+    }
+
+
+    public void finishJourneyOne() {
+        finishSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.finish_journey);
+        finishSoundM.start();
+        flagStart[0] = false;
+        Timer[0] = 0;
+        seconds[0] = 0;
+        minutes[0] = 0;
+        hours[0] = 0;
+        elapsed[0] = 0;
+        pointFlag[0] = false;
+        PassOneRegion.setBackgroundColor(Color.rgb(26, 35, 126));
+        String formattedLatitude1 = String.format("%.5f", latitude1[0]);
+        String formattedLongitude1 = String.format("%.5f", longitude1[0]);
+        String formattedLatitude2 = String.format("%.5f", latitude2[0]);
+        String formattedLongitude2 = String.format("%.5f", longitude2[0]);
+        String formattedDistance = String.format("%.3f", distanceTraveled[0]);
+        String formattedCost = String.format("%.3f", cost[0]);
+
+        distanceTraveled[0] = 0;
+        cost[0] = initionalRate / 10;
+
+        Intent i3 = new Intent(Multi_Taximeter.this, FinishSingleTaximeter.class);
+        i3.putExtra("idDriver", String.valueOf(identityCode));
+        i3.putExtra("startTime", String.valueOf(startTime[0]));
+        i3.putExtra("finishTime", String.valueOf(System.currentTimeMillis()));
+        i3.putExtra("srcLat", formattedLatitude1);
+        i3.putExtra("srcLng", formattedLongitude1);
+        i3.putExtra("desLat", formattedLatitude2);
+        i3.putExtra("desLng", formattedLongitude2);
+        i3.putExtra("distance", formattedDistance);
+        i3.putExtra("psgNum", "1");
+        i3.putExtra("cost", formattedCost);
+        startActivity(i3);
+
+    }
+
+
+    public void finishJourneyTwo() {
+        finishSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.finish_journey);
+        finishSoundM.start();
+        flagStart[1] = false;
+        Timer[1] = 0;
+        seconds[1] = 0;
+        minutes[1] = 0;
+        hours[1] = 0;
+        elapsed[1] = 0;
+        pointFlag[1] = false;
+        PassTwoRegion.setBackgroundColor(Color.rgb(26, 35, 126));
+        String formattedLatitude1 = String.format("%.5f", latitude1[1]);
+        String formattedLongitude1 = String.format("%.5f", longitude1[1]);
+        String formattedLatitude2 = String.format("%.5f", latitude2[1]);
+        String formattedLongitude2 = String.format("%.5f", longitude2[1]);
+        String formattedDistance = String.format("%.3f", distanceTraveled[1]);
+        String formattedCost = String.format("%.3f", cost[1]);
+
+        distanceTraveled[1] = 0;
+        cost[1] = initionalRate / 10;
+
+        Intent i3 = new Intent(Multi_Taximeter.this, FinishSingleTaximeter.class);
+        i3.putExtra("idDriver", String.valueOf(identityCode));
+        i3.putExtra("startTime", String.valueOf(startTime[1]));
+        i3.putExtra("finishTime", String.valueOf(System.currentTimeMillis()));
+        i3.putExtra("srcLat", formattedLatitude1);
+        i3.putExtra("srcLng", formattedLongitude1);
+        i3.putExtra("desLat", formattedLatitude2);
+        i3.putExtra("desLng", formattedLongitude2);
+        i3.putExtra("distance", formattedDistance);
+        i3.putExtra("psgNum", "2");
+        i3.putExtra("cost", formattedCost);
+        startActivity(i3);
+
+    }
+
+
+    public void finishJourneyThree() {
+        finishSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.finish_journey);
+        finishSoundM.start();
+        flagStart[2] = false;
+        Timer[2] = 0;
+        seconds[2] = 0;
+        minutes[2] = 0;
+        hours[2] = 0;
+        elapsed[2] = 0;
+        pointFlag[2] = false;
+        PassThreeRegion.setBackgroundColor(Color.rgb(26, 35, 126));
+        String formattedLatitude1 = String.format("%.5f", latitude1[2]);
+        String formattedLongitude1 = String.format("%.5f", longitude1[2]);
+        String formattedLatitude2 = String.format("%.5f", latitude2[2]);
+        String formattedLongitude2 = String.format("%.5f", longitude2[2]);
+        String formattedDistance = String.format("%.3f", distanceTraveled[2]);
+        String formattedCost = String.format("%.3f", cost[2]);
+
+        distanceTraveled[2] = 0;
+        cost[2] = initionalRate / 10;
+
+        Intent i3 = new Intent(Multi_Taximeter.this, FinishSingleTaximeter.class);
+        i3.putExtra("idDriver", String.valueOf(identityCode));
+        i3.putExtra("startTime", String.valueOf(startTime[2]));
+        i3.putExtra("finishTime", String.valueOf(System.currentTimeMillis()));
+        i3.putExtra("srcLat", formattedLatitude1);
+        i3.putExtra("srcLng", formattedLongitude1);
+        i3.putExtra("desLat", formattedLatitude2);
+        i3.putExtra("desLng", formattedLongitude2);
+        i3.putExtra("distance", formattedDistance);
+        i3.putExtra("psgNum", "3");
+        i3.putExtra("cost", formattedCost);
+        startActivity(i3);
+
+    }
+
+
+    public void finishJourneyFour() {
+        finishSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.finish_journey);
+        finishSoundM.start();
+        flagStart[3] = false;
+        Timer[3] = 0;
+        seconds[3] = 0;
+        minutes[3] = 0;
+        hours[3] = 0;
+        elapsed[3] = 0;
+        pointFlag[3] = false;
+        PassFourRegion.setBackgroundColor(Color.rgb(26, 35, 126));
+        String formattedLatitude1 = String.format("%.5f", latitude1[3]);
+        String formattedLongitude1 = String.format("%.5f", longitude1[3]);
+        String formattedLatitude2 = String.format("%.5f", latitude2[3]);
+        String formattedLongitude2 = String.format("%.5f", longitude2[3]);
+        String formattedDistance = String.format("%.3f", distanceTraveled[3]);
+        String formattedCost = String.format("%.3f", cost[3]);
+
+        distanceTraveled[3] = 0;
+        cost[3] = initionalRate / 10;
+
+        Intent i3 = new Intent(Multi_Taximeter.this, FinishSingleTaximeter.class);
+        i3.putExtra("idDriver", String.valueOf(identityCode));
+        i3.putExtra("startTime", String.valueOf(startTime[3]));
+        i3.putExtra("finishTime", String.valueOf(System.currentTimeMillis()));
+        i3.putExtra("srcLat", formattedLatitude1);
+        i3.putExtra("srcLng", formattedLongitude1);
+        i3.putExtra("desLat", formattedLatitude2);
+        i3.putExtra("desLng", formattedLongitude2);
+        i3.putExtra("distance", formattedDistance);
+        i3.putExtra("psgNum", "4");
+        i3.putExtra("cost", formattedCost);
+        startActivity(i3);
+
+    }
+
+
     void pauseOneTimer() {
+        pauseSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.pause_journey);
+        pauseSoundM.start();
         if (flagStart[0] == true) {
             Timer[0] = System.currentTimeMillis() - startTime[0];
             elapsed[0] = Timer[0] + elapsed[0];
@@ -180,6 +357,8 @@ public class Multi_Taximeter extends Activity {
     }
 
     void pauseTwoTimer() {
+        pauseSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.pause_journey);
+        pauseSoundM.start();
         if (flagStart[1] == true) {
             Timer[1] = System.currentTimeMillis() - startTime[1];
             elapsed[1] = Timer[1] + elapsed[1];
@@ -190,6 +369,8 @@ public class Multi_Taximeter extends Activity {
     }
 
     void pauseThreeTimer() {
+        pauseSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.pause_journey);
+        pauseSoundM.start();
         if (flagStart[2] == true) {
             Timer[2] = System.currentTimeMillis() - startTime[2];
             elapsed[2] = Timer[2] + elapsed[2];
@@ -200,7 +381,22 @@ public class Multi_Taximeter extends Activity {
     }
 
 
+    void pauseFourTimer() {
+        pauseSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.pause_journey);
+        pauseSoundM.start();
+        if (flagStart[3] == true) {
+            Timer[3] = System.currentTimeMillis() - startTime[3];
+            elapsed[3] = Timer[3] + elapsed[3];
+            Timer[3] = 0;
+            flagStart[3] = false;
+            pointFlag[3] = false;
+        }
+    }
+
+
     void stopOneTimer() {
+        stopSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.stop_journey);
+        stopSoundM.start();
         flagStart[0] = false;
         Timer[0] = 0;
         seconds[0] = 0;
@@ -209,9 +405,12 @@ public class Multi_Taximeter extends Activity {
         elapsed[0] = 0;
         pointFlag[0] = false;
         distanceTraveled[0] = 0;
+        cost[0] = initionalRate / 10;
     }
 
     void stopTwoTimer() {
+        stopSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.stop_journey);
+        stopSoundM.start();
         flagStart[1] = false;
         Timer[1] = 0;
         seconds[1] = 0;
@@ -220,9 +419,12 @@ public class Multi_Taximeter extends Activity {
         elapsed[1] = 0;
         pointFlag[1] = false;
         distanceTraveled[1] = 0;
+        cost[1] = initionalRate / 10;
     }
 
     void stopThreeTimer() {
+        stopSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.stop_journey);
+        stopSoundM.start();
         flagStart[2] = false;
         Timer[2] = 0;
         seconds[2] = 0;
@@ -231,15 +433,32 @@ public class Multi_Taximeter extends Activity {
         elapsed[2] = 0;
         pointFlag[2] = false;
         distanceTraveled[2] = 0;
+        cost[2] = initionalRate / 10;
+
+    }
+
+    void stopFourTimer() {
+        stopSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.stop_journey);
+        stopSoundM.start();
+        flagStart[3] = false;
+        Timer[3] = 0;
+        seconds[3] = 0;
+        minutes[3] = 0;
+        hours[3] = 0;
+        elapsed[3] = 0;
+        pointFlag[3] = false;
+        distanceTraveled[3] = 0;
+        cost[3] = initionalRate / 10;
     }
 
 
     void startOneTimer() {
+        startSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.start_journey);
+        startSoundM.start();
         if (flagStart[0] == false) {
             flagStart[0] = true;
             startTime[0] = System.currentTimeMillis();
-            LocalDateTime now = LocalDateTime.now();
-            startDate[0] = dateFormatter.format(now);
+            createJourney(identityCode, latitude2[0], longitude2[0], distanceTraveled[0], cost[0], 1, true, false);
         } else {
             flagStart[0] = true;
         }
@@ -247,11 +466,12 @@ public class Multi_Taximeter extends Activity {
     }
 
     void startTwoTimer() {
+        startSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.start_journey);
+        startSoundM.start();
         if (flagStart[1] == false) {
             flagStart[1] = true;
             startTime[1] = System.currentTimeMillis();
-            LocalDateTime now = LocalDateTime.now();
-            startDate[1] = dateFormatter.format(now);
+            createJourney(identityCode, latitude2[0], longitude2[0], distanceTraveled[0], cost[0], 2, true, false);
         } else {
             flagStart[1] = true;
         }
@@ -259,40 +479,86 @@ public class Multi_Taximeter extends Activity {
     }
 
     void startThreeTimer() {
+        startSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.start_journey);
+        startSoundM.start();
         if (flagStart[2] == false) {
             flagStart[2] = true;
             startTime[2] = System.currentTimeMillis();
-            LocalDateTime now = LocalDateTime.now();
-            startDate[2] = dateFormatter.format(now);
+            createJourney(identityCode, latitude2[0], longitude2[0], distanceTraveled[0], cost[0], 3, true, false);
         } else {
             flagStart[2] = true;
         }
         pointFlag[2] = true;
     }
 
-    public void getRate() {
-        Call<List<Rate>> call = jsonPlaceHolderApi.getRate();
-        call.enqueue(new Callback<List<Rate>>() {
+    void startFourTimer() {
+        startSoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.start_journey);
+        startSoundM.start();
+        if (flagStart[3] == false) {
+            flagStart[3] = true;
+            startTime[3] = System.currentTimeMillis();
+            createJourney(identityCode, latitude2[0], longitude2[0], distanceTraveled[0], cost[0], 4, true, false);
+        } else {
+            flagStart[3] = true;
+        }
+        pointFlag[3] = true;
+    }
+
+    public void getVRate() {
+
+        Call<List<VariableRate>> call = jsonPlaceHolderApi.getVRate();
+        call.enqueue(new Callback<List<VariableRate>>() {
             @Override
-            public void onResponse(Call<List<Rate>> call, Response<List<Rate>> response) {
+            public void onResponse(Call<List<VariableRate>> call, Response<List<VariableRate>> response) {
                 if (!response.isSuccessful()) {
                     //System.out.println("Code: " + response.code());
                     return;
                 }
-                List<Rate> posts = response.body();
-                for (Rate rate : posts) {
-                    eventsRate = rate.getEvents();
-                    weatherRate = rate.getWeather();
-                    districtRate = rate.getDistrict();
+                List<VariableRate> posts = response.body();
+                for (VariableRate variableRate : posts) {
+                    shift = variableRate.isTime();
+                    weather = variableRate.isWeather();
                 }
-                rate = eventsRate * weatherRate * districtRate;
+                // rate = eventsRate * weatherRate * districtRate;
             }
 
             @Override
-            public void onFailure(Call<List<Rate>> call, Throwable t) {
+            public void onFailure(Call<List<VariableRate>> call, Throwable t) {
                 //System.out.println("not response");
             }
         });
+        call = null;
+    }
+
+
+    public void getSRate() {
+
+        Call<List<StaticRate>> call = jsonPlaceHolderApi.getSRate();
+        call.enqueue(new Callback<List<StaticRate>>() {
+            @Override
+            public void onResponse(Call<List<StaticRate>> call, Response<List<StaticRate>> response) {
+                if (!response.isSuccessful()) {
+                    //System.out.println("Code: " + response.code());
+                    return;
+                }
+                List<StaticRate> srates = response.body();
+                for (StaticRate staticRate : srates) {
+                    if (staticRate.getZone() == 1 && (typeString.equals(String.valueOf(staticRate.getType()))) && (carString.equals(String.valueOf(staticRate.getVehicle())))) {
+
+                        initionalRate = staticRate.getInitional();
+                        distanceRate = staticRate.getDistance();
+                        timeRate = staticRate.getTime();
+                    }
+                }
+                //  rate = eventsRate * weatherRate * districtRate;
+            }
+
+            @Override
+            public void onFailure(Call<List<StaticRate>> call, Throwable t) {
+                //System.out.println("not response");
+            }
+        });
+        call = null;
     }
 
 
@@ -325,6 +591,41 @@ public class Multi_Taximeter extends Activity {
         return (c * r);
     }
 
+    private void createJourney(int IdDriver, double Lat, double Lng, double Distance, double Cost, int psgNum, boolean IsStart, boolean IsFinish) {
+
+        Journey journey = new Journey(IdDriver, Lat, Lng, Distance, Cost, psgNum, IsStart, IsFinish, true, false);
+
+        Call<Journey> call = jsonPlaceHolderApi.createJourney("application/json", journey);
+
+        call.enqueue(new Callback<Journey>() {
+            @Override
+            public void onResponse(Call<Journey> call, Response<Journey> response) {
+                if (!response.isSuccessful()) {
+                    //System.out.println("Code: " + response.code());
+                    return;
+                }
+
+                Journey postResponse = response.body();
+
+//                String content = "";
+//                content = "Code: " + response.code() + "\n";
+//                content += "ID: " + postResponse.getId() + "\n";
+//                content += "Identity Code: " + postResponse.getIdDriver() + "\n";
+//                content += "Distance: " + postResponse.getDistance() + "\n";
+//                content += "Cost: " + postResponse.getCost() + "\n";
+                //System.out.println(content);
+
+            }
+
+            @Override
+            public void onFailure(Call<Journey> call, Throwable t) {
+
+            }
+        });
+
+        journey = null;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -355,43 +656,50 @@ public class Multi_Taximeter extends Activity {
             firstName = extras.getString("firstName");
             lastName = extras.getString("lastName");
             carModel = extras.getString("carModel");
+            zoneString = extras.getString("zone");
+            typeString = extras.getString("type");
+            carString = extras.getString("car");
             pelak = extras.getString("pelak");
             color = extras.getString("color");
-
         }
 
 
-        final int[] coefficient = {0, 0, 0};
+        final int[] coefficient = {0, 0, 0, 0};
         tvLatitudeMulti = (TextView) findViewById(R.id.latitudeMultiTaximeter);
         tvLongitudeMulti = (TextView) findViewById(R.id.longitudeMultimeter);
         TextView DstOnePas = findViewById(R.id.dstOnePas);
         TextView DstTwoPas = findViewById(R.id.dstTwoPas);
         TextView DstThreePas = findViewById(R.id.dstThreePas);
+        TextView DstFourPas = findViewById(R.id.dstFourPas);
 
         TextView MinuteOnePass = findViewById(R.id.minuteOnePass);
         TextView MinuteTwoPass = findViewById(R.id.minuteTwoPass);
         TextView MinuteThreePass = findViewById(R.id.minuteThreePass);
+        TextView MinuteFourPass = findViewById(R.id.minuteFourPass);
         TextView SecOnePass = findViewById(R.id.secOnePass);
         TextView SecTwoPass = findViewById(R.id.secTwoPass);
         TextView SecThreePass = findViewById(R.id.secThreePass);
+        TextView SecFourPass = findViewById(R.id.secFourPass);
 
-        TextView eventsTextMultiView = findViewById(R.id.eventsTextMulti);
-        TextView weatherTextMultiView = findViewById(R.id.weatherTextMulti);
-        TextView districtTextMultiView = findViewById(R.id.districtTextMulti);
+
+        CheckBox WeatherCheckBoxMultimeter = findViewById(R.id.weatherCheckMultimeter);
+        CheckBox ShiftCheckBoxMultimeter = findViewById(R.id.shiftCheckMultimeter);
 
         TextView CostOnePass = findViewById(R.id.costOnePass);
         TextView CostTwoPass = findViewById(R.id.costTwoPass);
         TextView CostThreePass = findViewById(R.id.costThreePass);
+        TextView CostFourPass = findViewById(R.id.costFourPass);
 
-        LinearLayout PassOneRegion = findViewById(R.id.passOneRegion);
-        LinearLayout PassTwoRegion = findViewById(R.id.passTwoRegion);
-        LinearLayout PassThreeRegion = findViewById(R.id.passThreeRegion);
+        PassOneRegion = findViewById(R.id.passOneRegion);
+        PassTwoRegion = findViewById(R.id.passTwoRegion);
+        PassThreeRegion = findViewById(R.id.passThreeRegion);
+        PassFourRegion = findViewById(R.id.passFourRegion);
 
         Resources res = getResources();
         Resources res2 = getResources();
         Resources res3 = getResources();
 
-;
+        ;
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://taximeterict.pythonanywhere.com/")
@@ -408,35 +716,13 @@ public class Multi_Taximeter extends Activity {
         Runnable runnable = new Runnable() {
             public void run() {
                 GpsTracker gpsTracker = new GpsTracker(Multi_Taximeter.this);
-                ImageView imageCheckNetMultiTaximeter = (ImageView) findViewById(R.id.netCheckIconMultitTaximeter);
                 ImageView checkGPSMultiTaximeter = (ImageView) findViewById(R.id.gpsCheckIconMultitTaximeter);
-
-
-                if (isNetworkConnected()) {
-                    Resources res = getResources();
-                    imageCheckNetMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.netconnected));
-                    netAlarmMultiTaximeter.setText("");
-                    getRate();
-                } else {
-                    Resources res = getResources();
-                    imageCheckNetMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.netnotconnected));
-                    netAlarmMultiTaximeter.setText("اینترنت تلفن همراه خود را روشن کنید !");
-                    Animation anim = new AlphaAnimation(0.0f, 1.0f);
-                    anim.setDuration(500); //You can manage the blinking time with this parameter
-                    anim.setStartOffset(40);
-                    anim.setRepeatMode(Animation.REVERSE);
-                    anim.setRepeatCount(Animation.INFINITE);
-                    netAlarmMultiTaximeter.startAnimation(anim);
-                    districtRate = 1;
-                    eventsRate = 1;
-                    weatherRate = 1;
-                }
 
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     Resources res = getResources();
-                    checkGPSMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.gpsnotconnected));
+                    checkGPSMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.gpsnotconnectedicon));
                     gpsAlarmMultiTaximeter.setText("موقعیت مکانی خود را روشن کنید !");
                     Animation anim2 = new AlphaAnimation(0.0f, 1.0f);
                     anim2.setDuration(50); //You can manage the blinking time with this parameter
@@ -446,13 +732,9 @@ public class Multi_Taximeter extends Activity {
                     gpsAlarmMultiTaximeter.startAnimation(anim2);
                 } else {
                     Resources res = getResources();
-                    checkGPSMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.gpsconnected));
+                    checkGPSMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.gpsconnectedicon));
                     gpsAlarmMultiTaximeter.setText("");
                 }
-
-                eventsTextMultiView.setText(Integer.toString(eventsRate));
-                weatherTextMultiView.setText(Integer.toString(weatherRate));
-                districtTextMultiView.setText(Integer.toString(districtRate));
 
                 // ------------------------------------------------------------- //
 
@@ -466,10 +748,6 @@ public class Multi_Taximeter extends Activity {
                             startLongitude[0] = longitude2[0];
                         }
 
-                        String formattedLatitude2 = String.format("%.5f", latitude2[0]);
-                        String formattedLongitude2 = String.format("%.5f", longitude2[0]);
-                        tvLatitudeMulti.setText("Lat: " + formattedLatitude2);
-                        tvLongitudeMulti.setText("Lng: " + formattedLongitude2);
                     } else {
                         latitude1[0] = latitude2[0];
                         longitude1[0] = longitude2[0];
@@ -478,19 +756,49 @@ public class Multi_Taximeter extends Activity {
                         latitude2[0] = gpsTracker.getLatitude();
                         longitude2[0] = gpsTracker.getLongitude();
                         distanceNow[0] = distance(latitude2[0], latitude1[0], longitude2[0], longitude1[0]);
-                        if (distanceNow[0] > (coefficient[0] * 0.036)) {
+                        timeWaiting[0] += 2;
+
+                        if (distanceNow[0] > (coefficient[0] * 0.120)) {
                             coefficient[0]++;
-                        } else if (distanceNow[0] < (coefficient[0] * 0.036)) {
+                        } else if (distanceNow[0] < (coefficient[0] * 0.120)) {
                             distanceTraveled[0] = distanceNow[0] + distanceTraveled[0];
                             coefficient[0] = 0;
                         } else if (coefficient[0] == 8) {
                             distanceTraveled[0] = distanceNow[0] + distanceTraveled[0];
                             coefficient[0] = 0;
                         }
-                        String formattedLatitude2 = String.format("%.5f", latitude2[0]);
-                        String formattedLongitude2 = String.format("%.5f", longitude2[0]);
-                        tvLatitudeMulti.setText("Lat: " + formattedLatitude2);
-                        tvLongitudeMulti.setText("Lng: " + formattedLongitude2);
+
+                        if (weather == false && shift == false) {
+                            cost[0] += (distanceNow[0] * 1000 * (distanceRate / 200) / 10);
+                        } else if (shift == true && weather == false) {
+                            cost[0] += (distanceNow[0] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[0] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else if (shift == false && weather == true) {
+                            cost[0] += (distanceNow[0] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[0] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else {
+                            cost[0] += (distanceNow[0] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[0] * 1000 * (distanceRate / 200) / 10) * 0.4);
+                        }
+                        distanceTraveled[0] = distanceNow[0] + distanceTraveled[0];
+                        distanceTiming[0] += distanceNow[0];
+                        if (timeWaiting[0] >= 15) {
+                            if (distanceTiming[0] < 0.075) {
+                                if (weather == false && shift == false) {
+                                    cost[0] += 15 * timeRate / 100;
+                                } else if (shift == true && weather == false) {
+                                    cost[0] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else if (shift == false && weather == true) {
+                                    cost[0] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else {
+                                    cost[0] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.4);
+                                }
+                                distanceTiming[0] = 0;
+                                timeWaiting[0] = 0;
+                            } else {
+                                timeWaiting[0] = 0;
+                                distanceTiming[0] = 0;
+                            }
+                        }
+
+
                     }
 
 
@@ -512,15 +820,48 @@ public class Multi_Taximeter extends Activity {
                         latitude2[1] = gpsTracker.getLatitude();
                         longitude2[1] = gpsTracker.getLongitude();
                         distanceNow[1] = distance(latitude2[1], latitude1[1], longitude2[1], longitude1[1]);
-                        if (distanceNow[1] > (coefficient[1] * 0.036)) {
+                        timeWaiting[1] += 2;
+                        if (distanceNow[1] > (coefficient[1] * 0.120)) {
                             coefficient[1]++;
-                        } else if (distanceNow[1] < (coefficient[1] * 0.036)) {
+                        } else if (distanceNow[1] < (coefficient[1] * 0.120)) {
                             distanceTraveled[1] = distanceNow[1] + distanceTraveled[1];
                             coefficient[1] = 0;
                         } else if (coefficient[1] == 8) {
                             distanceTraveled[1] = distanceNow[1] + distanceTraveled[1];
                             coefficient[1] = 0;
                         }
+
+                        if (weather == false && shift == false) {
+                            cost[1] += (distanceNow[1] * 1000 * (distanceRate / 200) / 10);
+                        } else if (shift == true && weather == false) {
+                            cost[1] += (distanceNow[1] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[1] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else if (shift == false && weather == true) {
+                            cost[1] += (distanceNow[1] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[1] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else {
+                            cost[1] += (distanceNow[1] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[1] * 1000 * (distanceRate / 200) / 10) * 0.4);
+                        }
+                        distanceTraveled[1] = distanceNow[1] + distanceTraveled[1];
+                        distanceTiming[1] += distanceNow[1];
+                        if (timeWaiting[1] >= 15) {
+                            if (distanceTiming[1] < 0.075) {
+                                if (weather == false && shift == false) {
+                                    cost[1] += 15 * timeRate / 100;
+                                } else if (shift == true && weather == false) {
+                                    cost[1] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else if (shift == false && weather == true) {
+                                    cost[1] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else {
+                                    cost[1] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.4);
+                                }
+                                distanceTiming[1] = 0;
+                                timeWaiting[1] = 0;
+                            } else {
+                                timeWaiting[1] = 0;
+                                distanceTiming[1] = 0;
+                            }
+                        }
+
+
                     }
 
 
@@ -542,14 +883,106 @@ public class Multi_Taximeter extends Activity {
                         latitude2[2] = gpsTracker.getLatitude();
                         longitude2[2] = gpsTracker.getLongitude();
                         distanceNow[2] = distance(latitude2[2], latitude1[2], longitude2[2], longitude1[2]);
-                        if (distanceNow[2] > (coefficient[2] * 0.036)) {
+                        timeWaiting[2] += 2;
+                        if (distanceNow[2] > (coefficient[2] * 0.120)) {
                             coefficient[2]++;
-                        } else if (distanceNow[2] < (coefficient[2] * 0.036)) {
+                        } else if (distanceNow[2] < (coefficient[2] * 0.120)) {
                             distanceTraveled[2] = distanceNow[2] + distanceTraveled[2];
                             coefficient[2] = 0;
                         } else if (coefficient[2] == 8) {
                             distanceTraveled[2] = distanceNow[2] + distanceTraveled[2];
                             coefficient[2] = 0;
+                        }
+
+                        if (weather == false && shift == false) {
+                            cost[2] += (distanceNow[2] * 1000 * (distanceRate / 200) / 10);
+                        } else if (shift == true && weather == false) {
+                            cost[2] += (distanceNow[2] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[2] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else if (shift == false && weather == true) {
+                            cost[2] += (distanceNow[2] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[2] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else {
+                            cost[2] += (distanceNow[2] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[2] * 1000 * (distanceRate / 200) / 10) * 0.4);
+                        }
+                        distanceTraveled[2] = distanceNow[2] + distanceTraveled[2];
+                        distanceTiming[2] += distanceNow[2];
+                        if (timeWaiting[2] >= 15) {
+                            if (distanceTiming[2] < 0.075) {
+                                if (weather == false && shift == false) {
+                                    cost[2] += 15 * timeRate / 100;
+                                } else if (shift == true && weather == false) {
+                                    cost[2] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else if (shift == false && weather == true) {
+                                    cost[2] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else {
+                                    cost[2] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.4);
+                                }
+                                distanceTiming[2] = 0;
+                                timeWaiting[2] = 0;
+                            } else {
+                                timeWaiting[2] = 0;
+                                distanceTiming[2] = 0;
+                            }
+                        }
+                    }
+
+
+                    // ------------------------------------------- //
+
+                    if (pointFlag[3] == false) {
+                        latitude2[3] = gpsTracker.getLatitude();
+                        longitude2[3] = gpsTracker.getLongitude();
+
+                        if (seconds[3] == 0) {
+                            startLatitude[3] = latitude2[3];
+                            startLongitude[3] = longitude2[3];
+                        }
+                    } else {
+                        latitude1[3] = latitude2[3];
+                        longitude1[3] = longitude2[3];
+                        String formattedDistanceFourTraveled = String.format("%.3f", distanceTraveled[3]);
+                        DstFourPas.setText(formattedDistanceFourTraveled + " کیلومتر");
+                        latitude2[3] = gpsTracker.getLatitude();
+                        longitude2[3] = gpsTracker.getLongitude();
+                        distanceNow[3] = distance(latitude2[3], latitude1[3], longitude2[3], longitude1[3]);
+                        timeWaiting[3] += 2;
+                        if (distanceNow[3] > (coefficient[3] * 0.120)) {
+                            coefficient[3]++;
+                        } else if (distanceNow[3] < (coefficient[3] * 0.120)) {
+                            distanceTraveled[3] = distanceNow[3] + distanceTraveled[3];
+                            coefficient[3] = 0;
+                        } else if (coefficient[3] == 8) {
+                            distanceTraveled[3] = distanceNow[3] + distanceTraveled[3];
+                            coefficient[3] = 0;
+                        }
+
+                        if (weather == false && shift == false) {
+                            cost[3] += (distanceNow[3] * 1000 * (distanceRate / 200) / 10);
+                        } else if (shift == true && weather == false) {
+                            cost[3] += (distanceNow[3] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[3] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else if (shift == false && weather == true) {
+                            cost[3] += (distanceNow[3] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[3] * 1000 * (distanceRate / 200) / 10) * 0.2);
+                        } else {
+                            cost[3] += (distanceNow[3] * 1000 * (distanceRate / 200) / 10) + ((distanceNow[3] * 1000 * (distanceRate / 200) / 10) * 0.4);
+                        }
+                        distanceTraveled[3] = distanceNow[3] + distanceTraveled[3];
+                        distanceTiming[3] += distanceNow[3];
+                        if (timeWaiting[3] >= 15) {
+                            if (distanceTiming[3] < 0.075) {
+                                if (weather == false && shift == false) {
+                                    cost[3] += 15 * timeRate / 100;
+                                } else if (shift == true && weather == false) {
+                                    cost[3] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else if (shift == false && weather == true) {
+                                    cost[3] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.2);
+                                } else {
+                                    cost[3] += (15 * timeRate / 100) + ((15 * timeRate / 100) * 0.4);
+                                }
+                                distanceTiming[3] = 0;
+                                timeWaiting[3] = 0;
+                            } else {
+                                timeWaiting[3] = 0;
+                                distanceTiming[3] = 0;
+                            }
                         }
                     }
 
@@ -577,7 +1010,15 @@ public class Multi_Taximeter extends Activity {
                     CostThreePass.setText(formattedCost + " تومان");
                 }
 
-                handler.postDelayed(this, 1000);
+                if (flagStart[3] == true) {
+                    MinuteFourPass.setText(Integer.toString(minutes[3]));
+                    SecFourPass.setText(Integer.toString(seconds[3]));
+                    String formattedCost = String.format("%.2f", cost[3]);
+                    CostFourPass.setText(formattedCost + " تومان");
+                }
+
+
+                handler.postDelayed(this, 2000);
             }
 
         };
@@ -592,7 +1033,6 @@ public class Multi_Taximeter extends Activity {
                     hours[0] = (int) duration[0] / 3600;
                     minutes[0] = (int) (duration[0] % 3600) / 60;
                     seconds[0] = (int) (duration[0] % 60);
-                    cost[0] = (distanceTraveled[0] * rate * 35) + 500 + (hours[0] * rate * 0.6 * 3600) + (minutes[0] * rate * 0.6 * 60) + (seconds[0] * rate * 0.6);
                 }
 
 
@@ -601,7 +1041,6 @@ public class Multi_Taximeter extends Activity {
                     hours[1] = (int) duration[1] / 3600;
                     minutes[1] = (int) (duration[1] % 3600) / 60;
                     seconds[1] = (int) (duration[1] % 60);
-                    cost[1] = (distanceTraveled[1] * rate * 35) + 500 + (hours[1] * rate * 0.6 * 3600) + (minutes[1] * rate * 0.6 * 60) + (seconds[1] * rate * 0.6);
                 }
 
 
@@ -610,7 +1049,14 @@ public class Multi_Taximeter extends Activity {
                     hours[2] = (int) duration[2] / 3600;
                     minutes[2] = (int) (duration[2] % 3600) / 60;
                     seconds[2] = (int) (duration[2] % 60);
-                    cost[2] = (distanceTraveled[2] * rate * 35) + 500 + (hours[2] * rate * 0.6 * 3600) + (minutes[2] * rate * 0.6 * 60) + (seconds[2] * rate * 0.6);
+                }
+
+
+                duration[3] = printFourCountDown() / 1000;
+                if (flagStart[3] == true) {
+                    hours[3] = (int) duration[3] / 3600;
+                    minutes[3] = (int) (duration[3] % 3600) / 60;
+                    seconds[3] = (int) (duration[3] % 60);
                 }
 
 
@@ -620,9 +1066,42 @@ public class Multi_Taximeter extends Activity {
         };
         runnable2.run();
 
+        final boolean[] flagInitialRate = {false};
+
 
         Runnable runnable3 = new Runnable() {
             public void run() {
+
+                ImageView imageCheckNetMultiTaximeter = (ImageView) findViewById(R.id.netCheckIconMultitTaximeter);
+
+                if (isNetworkConnected()) {
+                    Resources res = getResources();
+                    imageCheckNetMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.netconnectedicon));
+                    netAlarmMultiTaximeter.setText("");
+                    getSRate();
+                    getVRate();
+
+                    if (initionalRate != 0 && flagInitialRate[0] == false) {
+                        cost[0] = initionalRate / 10;
+                        cost[1] = initionalRate / 10;
+                        cost[2] = initionalRate / 10;
+                        cost[3] = initionalRate / 10;
+                        flagInitialRate[0] = true;
+                    }
+
+                } else {
+                    Resources res = getResources();
+                    imageCheckNetMultiTaximeter.setImageDrawable(res.getDrawable(R.drawable.netnotconnectedicon));
+                    netAlarmMultiTaximeter.setText("اینترنت تلفن همراه خود را روشن کنید !");
+                    Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                    anim.setDuration(1000); //You can manage the blinking time with this parameter
+                    anim.setStartOffset(40);
+                    anim.setRepeatMode(Animation.REVERSE);
+                    anim.setRepeatCount(Animation.INFINITE);
+                    netAlarmMultiTaximeter.startAnimation(anim);
+                    netsoundM = MediaPlayer.create(Multi_Taximeter.this, R.raw.net_alert);
+                    netsoundM.start();
+                }
 
                 GpsTracker gpsTracker = new GpsTracker(Multi_Taximeter.this);
                 if (gpsTracker.canGetLocation()) {
@@ -631,6 +1110,20 @@ public class Multi_Taximeter extends Activity {
                 } else {
                     gpsTracker.showSettingsAlert();
                 }
+
+
+                if (weather == true) {
+                    WeatherCheckBoxMultimeter.setChecked(true);
+                } else {
+                    WeatherCheckBoxMultimeter.setChecked(false);
+                }
+                if (shift == true) {
+                    ShiftCheckBoxMultimeter.setChecked(true);
+                } else {
+                    ShiftCheckBoxMultimeter.setChecked(false);
+                }
+
+
                 handler.postDelayed(this, 14300);
             }
 
@@ -671,12 +1164,13 @@ public class Multi_Taximeter extends Activity {
                                 isStart[0] = true;
                                 startOneTimer();
                                 Toast.makeText(getApplicationContext(), "تایمر مسافر 1 شروع به کار کرد", Toast.LENGTH_SHORT).show();
-                                PassOneRegion.setBackgroundColor(Color.rgb(0,96,100));
+                                PassOneRegion.setBackgroundColor(Color.rgb(0, 96, 100));
                             } else if (isStart[0] == true) {
                                 isStart[0] = false;
+                                finishJourneyOne();
                                 stopOneTimer();
                                 Toast.makeText(getApplicationContext(), "سفر مسافر 1 به اتمام رسید !", Toast.LENGTH_SHORT).show();
-                                PassOneRegion.setBackgroundColor(Color.rgb(1,87,155));
+                                PassOneRegion.setBackgroundColor(Color.rgb(1, 87, 155));
                                 //CountdownOneIcon.setImageDrawable(res.getDrawable(R.drawable.stop));
                             }
                         }
@@ -738,13 +1232,14 @@ public class Multi_Taximeter extends Activity {
                                 isStart[1] = true;
                                 startTwoTimer();
                                 Toast.makeText(getApplicationContext(), "تایمر مسافر 2 شروع به کار کرد", Toast.LENGTH_SHORT).show();
-                               // CountdownTwoIcon.setImageDrawable(res2.getDrawable(R.drawable.play));
-                                PassTwoRegion.setBackgroundColor(Color.rgb(0,96,100));
+                                // CountdownTwoIcon.setImageDrawable(res2.getDrawable(R.drawable.play));
+                                PassTwoRegion.setBackgroundColor(Color.rgb(0, 96, 100));
                             } else if (isStart[1] == true) {
                                 isStart[1] = false;
+                                finishJourneyTwo();
                                 stopTwoTimer();
                                 Toast.makeText(getApplicationContext(), "تایمر مسافر 2 متوقف شد", Toast.LENGTH_SHORT).show();
-                                PassTwoRegion.setBackgroundColor(Color.rgb(1,87,155));
+                                PassTwoRegion.setBackgroundColor(Color.rgb(1, 87, 155));
                                 //CountdownTwoIcon.setImageDrawable(res2.getDrawable(R.drawable.stop));
                             }
                         }
@@ -807,12 +1302,13 @@ public class Multi_Taximeter extends Activity {
                                 startThreeTimer();
                                 Toast.makeText(getApplicationContext(), "تایمر مسافر 3 شروع به کار کرد", Toast.LENGTH_SHORT).show();
                                 //CountdownThreeIcon.setImageDrawable(res3.getDrawable(R.drawable.play));
-                                PassThreeRegion.setBackgroundColor(Color.rgb(0,96,100));
+                                PassThreeRegion.setBackgroundColor(Color.rgb(0, 96, 100));
                             } else if (isStart[2] == true) {
                                 isStart[2] = false;
+                                finishJourneyThree();
                                 stopThreeTimer();
                                 Toast.makeText(getApplicationContext(), "تایمر مسافر 3 متوقف شد", Toast.LENGTH_SHORT).show();
-                                PassThreeRegion.setBackgroundColor(Color.rgb(1,87,155));
+                                PassThreeRegion.setBackgroundColor(Color.rgb(1, 87, 155));
                                 //CountdownThreeIcon.setImageDrawable(res3.getDrawable(R.drawable.stop));
                             }
                         }
@@ -842,6 +1338,75 @@ public class Multi_Taximeter extends Activity {
         });
 
 
+        PassFourRegion.setOnTouchListener(new View.OnTouchListener() {
+            Handler handler4 = new Handler();
+
+            int numberOfTaps4 = 0;
+            long lastTapTimeMs4 = 0;
+            long touchDownMs4 = 0;
+
+            @Override
+            public boolean onTouch(View v4, MotionEvent event4) {
+                switch (event4.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchDownMs4 = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler4.removeCallbacksAndMessages(null);
+
+                        if ((System.currentTimeMillis() - touchDownMs4) > ViewConfiguration.getTapTimeout()) {
+                            //it was not a tap
+                            numberOfTaps4 = 0;
+                            lastTapTimeMs4 = 0;
+                            break;
+                        }
+
+                        if (numberOfTaps4 > 0
+                                && (System.currentTimeMillis() - lastTapTimeMs4) < ViewConfiguration.getDoubleTapTimeout()) {
+                            numberOfTaps4 += 1;
+                        } else {
+                            numberOfTaps4 = 1;
+                            if (isStart[3] == false) {
+                                isStart[3] = true;
+                                startFourTimer();
+                                Toast.makeText(getApplicationContext(), "تایمر مسافر 4 شروع به کار کرد", Toast.LENGTH_SHORT).show();
+                                //CountdownFourIcon.setImageDrawable(res4.getDrawable(R.drawable.play));
+                                PassFourRegion.setBackgroundColor(Color.rgb(0, 96, 100));
+                            } else if (isStart[3] == true) {
+                                isStart[3] = false;
+                                finishJourneyFour();
+                                stopFourTimer();
+                                Toast.makeText(getApplicationContext(), "تایمر مسافر 4 متوقف شد", Toast.LENGTH_SHORT).show();
+                                PassFourRegion.setBackgroundColor(Color.rgb(1, 87, 155));
+                                //CountdownFourIcon.setImageDrawable(res4.getDrawable(R.drawable.stop));
+                            }
+                        }
+
+                        lastTapTimeMs4 = System.currentTimeMillis();
+
+                        if (numberOfTaps4 == 3) {
+
+                            //handle triple tap
+                        } else if (numberOfTaps4 == 2) {
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //handle double tap
+                                    pauseFourTimer();
+                                    Toast.makeText(getApplicationContext(), "سفر مسافر 4 به اتمام رسید !", Toast.LENGTH_SHORT).show();
+                                    //CountdownFourIcon.setImageDrawable(res2.getDrawable(R.drawable.stop));
+                                    isStart[3] = false;
+                                }
+                            }, ViewConfiguration.getDoubleTapTimeout());
+                        }
+                }
+
+                return true;
+            }
+
+        });
+
     }
+
 
 }
